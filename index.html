@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Data</title>
+</head>
+<body>
+    <div id='weather'></div>
+    <script>
+        fetch('https://api.data.gov.sg/v1/environment/rainfall')
+            .then(response => response.json())
+            .then(data => showData(data.metadata.stations));
+
+        showData = data => {
+            const dataDiv = document.getElementById('weather');
+            Date.prototype.timeNow = function () {
+                return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes();
+            }
+            var datetime = new Date().timeNow();
+            data.forEach(data => {
+                if (data.name == "Sentosa") {
+                    const dataElement = document.createElement('p');
+                    dataElement.innerText = `Location: ${data.name}, Current Time: ${datetime}, Rainfall: 0mm, Not Raining`;
+                    dataDiv.append(dataElement);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
